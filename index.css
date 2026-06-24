@@ -1,34 +1,64 @@
 @import "tailwindcss";
 
+/* Step 1: Define all custom fonts using @font-face */
+
 @font-face {
     font-family: 'ITC Avant Garde';
-    src: url('https://pub-06603fe5e0684f8dbada774a782181eb.r2.dev/style/ITCAvantGardeStd-Bold.otf') format('opentype');
+    src: url('https://serkanarslan.me/media/fonts/ITCAvantGardeGothicLTBold.woff2') format('woff2');
     font-weight: bold;
+    font-display: swap;
 }
+
 @font-face {
     font-family: 'Basic Commercial';
-    src: url('https://pub-06603fe5e0684f8dbada774a782181eb.r2.dev/style/BasicCommercial-Regular.ttf') format('truetype');
+    src: url('https://serkanarslan.me/media/fonts/BasicCommercialLT-Roman.woff2') format('woff2');
     font-weight: normal;
+    font-display: swap;
 }
+
 @font-face {
     font-family: 'Basic Commercial';
-    src: url('https://pub-06603fe5e0684f8dbada774a782181eb.r2.dev/style/BasicCommercial-Bold.ttf') format('truetype');
+    src: url('https://serkanarslan.me/media/fonts/BasicCommercialLT-Bold.woff2') format('woff2');
     font-weight: bold;
+    font-display: swap;
 }
+
+@font-face {
+    font-family: 'Basic Commercial';
+    src: url('https://serkanarslan.me/media/fonts/BasicCommercialLT-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Mono';
+    src: url('https://serkanarslan.me/media/fonts/SpaceMono-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Mono';
+    src: url('https://serkanarslan.me/media/fonts/SpaceMono-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-display: swap;
+}
+
+/* Step 2: Register fonts in Tailwind @theme block */
 
 @theme {
-  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Syncopate", sans-serif;
+  --font-heading: "ITC Avant Garde", "Basic Commercial", sans-serif;
+  --font-sans: "Basic Commercial", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, "Courier New", monospace;
 }
 
+/* Rest of your existing CSS variables and styles continue below */
 
 :root {
   --purple: #8075ff;
   --bg: #0a0a0a;
   --panel-width: 25vw;
-  /* Heavy Snap Easing for general UI */
   --transition-kinetic: all 1.2s cubic-bezier(0.075, 0.82, 0.165, 1);
-  /* Max Curve Easing for the Train Loop Entry */
   --ease-max-snap: cubic-bezier(0.075, 0.82, 0.165, 1);
   --ease-loop: cubic-bezier(0.85, 0, 0.15, 1); 
   --cell-w: 800px;

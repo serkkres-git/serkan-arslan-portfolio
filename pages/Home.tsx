@@ -7,21 +7,21 @@ const CATEGORIES = [
     id: 'producer',
     title: 'PRODUCER',
     subtext: 'first spark to the final frame',
-    image: 'https://res.cloudinary.com/diubrcu4q/image/upload/v1778585587/ChatGPT_Image_12_May_2026_14_32_52_d3qvgf.png',
+    image: 'https://serkanarslan.me/media/images/landingpage/landingpage_producer_bg.png',
     link: '/producer'
   },
   {
     id: 'editor',
     title: 'VIDEO EDITOR',
     subtext: 'narrative sculpting',
-    image: 'https://res.cloudinary.com/diubrcu4q/image/upload/v1778529071/editor_bg_image_11_jjxr12.png',
+    image: 'https://serkanarslan.me/media/images/landingpage/landingpage_editor_bg.png',
     link: '/video-editor'
   },
   {
     id: 'designer',
     title: 'MOTION DESIGNER',
     subtext: 'dynamic visual experiences',
-    image: 'https://res.cloudinary.com/diubrcu4q/image/upload/v1778528961/motion_bg_image_11_dqbhy5.png',
+    image: 'https://serkanarslan.me/media/images/landingpage/landingpage_motion_bg.png',
     link: '/motion-designer'
   }
 ];

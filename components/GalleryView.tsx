@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const catalog = [
-    { id: "PeQn0uR7eso", title: "Red Bull Track Takeover", yr: "2026", slug: "/red-bull-track-takeover", meta: "4 EPISODES" },
+    { id: "PeQn0uR7eso", title: "Red Bull Track Takeover", yr: "2026", slug: "/red-bull-track-takeover", meta: "4 EPISODES", thumbnail: "https://serkanarslan.me/media/thumbnails/thumb_tracktakeover.webp" },
     { id: "D6HiDIH9kFM", title: "Red Bull Rap Trivia", yr: "2024", slug: "/red-bull-rap-trivia", episodes: [
         { id: "WuLPNvPWXF0", title: "Khontkar vs Lil Zey" },
         { id: "UGhQtMcnjg8", title: "Motive vs Uzi" }
@@ -261,7 +261,7 @@ const GalleryView: React.FC = () => {
           // loop over the cells and repeat ytItems if needed
           for (let i = 0; i < cells.length; i++) {
               const item = ytItems[i % ytItems.length];
-              const bgUrl = `https://img.youtube.com/vi/${item.id}/hqdefault.jpg`;
+              const bgUrl = (item as any).thumbnail || `https://img.youtube.com/vi/${item.id}/hqdefault.jpg`;
               (cells[i] as HTMLElement).style.backgroundImage = `url('${bgUrl}')`;
               (cells[i] as HTMLElement).style.backgroundSize = 'cover';
               (cells[i] as HTMLElement).style.backgroundPosition = 'center';
@@ -504,9 +504,9 @@ const GalleryView: React.FC = () => {
       
       <div className="grid-container" id="galleryGrid">
         {catalog.map((p, i) => {
-          const bgUrl = (p as any).isInstagram || p.id.includes('rrn') 
+          const bgUrl = (p as any).thumbnail || ((p as any).isInstagram || p.id.includes('rrn') 
             ? `https://picsum.photos/seed/${p.title.replace(/\s/g, '')}/1280/720` 
-            : `https://img.youtube.com/vi/${p.id}/maxresdefault.jpg`;
+            : `https://img.youtube.com/vi/${p.id}/maxresdefault.jpg`);
           return (
             <div key={p.id} className="project-card" onClick={() => openConsole(i)}>
               <div className="card-img" style={{ backgroundImage: `url('${bgUrl}')` }}></div>
