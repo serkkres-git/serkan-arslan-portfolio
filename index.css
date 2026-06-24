@@ -3,9 +3,9 @@
 /* Google Fonts are loaded in index.html */
 
 @theme {
-  --font-heading: "Lexend Deca", "Poppins", sans-serif;
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-heading: "Lexend Deca", sans-serif;
+  --font-sans: "Lexend Deca", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Lexend Deca", ui-monospace, monospace;
 }
 
 /* Rest of your existing CSS variables and styles continue below */
@@ -128,7 +128,18 @@ body {
 
 .video-modal { position: fixed; inset: 0; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: none; opacity: 0; transition: opacity 0.5s; cursor: pointer; }
 .video-modal.active { opacity: 1; display: block; }
-.console-stage { position: absolute; top: calc(50% + 130px); left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; width: 65vw; cursor: default; }
+.console-stage { 
+    position: absolute; 
+    top: calc(50% + 130px); 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 65vw; 
+    height: 60vh;
+    cursor: default; 
+}
 
 .info-panel { 
     flex: 0 0 0%; opacity: 1; padding-top: 10px; padding-bottom: 10px; display: flex; flex-direction: column; justify-content: center;
@@ -276,8 +287,8 @@ body {
 
 .nav-zone { position: absolute; top: 50%; transform: translateY(-50%); width: 80px; height: 80px; cursor: pointer; z-index: 20; display: flex; align-items: center; justify-content: center; transition: none; }
 .prev-zone { left: -100px; } .next-zone { right: -100px; }
-.video-modal.casestudy-active .prev-zone, .video-modal.episodes-active .prev-zone { left: -50px; }
-.video-modal.casestudy-active .next-zone, .video-modal.episodes-active .next-zone { right: -50px; }
+.video-modal.casestudy-active .prev-zone, .video-modal.episodes-active .prev-zone { left: -100px; }
+.video-modal.casestudy-active .next-zone, .video-modal.episodes-active .next-zone { right: -100px; }
 .nav-arrow { font-size: 2.5rem; color: rgba(255,255,255,0.2); transition: none; }
 .nav-zone:hover .nav-arrow { color: #00e58c; }
 
@@ -327,13 +338,16 @@ body {
     pointer-events: none;
 }
 .video-modal.casestudy-active .video-window {
-    flex: 0 0 33vw;
+    flex: 0 0 28vw;
+}
+.video-modal.casestudy-active .video-container {
+    width: 100%;
 }
 .video-modal.casestudy-active.instagram-active .video-container {
     width: 60%;
 }
 .video-modal.casestudy-active .console-stage {
-    width: 90vw;
+    width: 65vw;
 }
 
 .case-study-wrapper {
@@ -341,11 +355,11 @@ body {
     transition: none; position: relative; margin-right: 0; pointer-events: none;
 }
 .video-modal.casestudy-active .case-study-wrapper {
-    flex: 0 0 clamp(400px, 55vw, 1200px); width: clamp(400px, 55vw, 1200px); opacity: 1; margin-right: 2vw; white-space: normal; height: 60vh;
+    flex: 0 0 35vw; width: 35vw; opacity: 1; margin-right: 2vw; white-space: normal; height: 60vh;
     pointer-events: auto; padding-left: 50px; border-left: 1px solid rgba(255, 255, 255, 0.1); box-sizing: border-box;
 }
 .cs-inner {
-    width: clamp(400px, 60vw, 1200px);
+    width: 100%;
     transform: translateY(80px);
     opacity: 0;
     transition: none;
@@ -405,13 +419,16 @@ body {
     position: absolute; top: 50%; margin-top: -100px; transform: translateY(-80px); opacity: 0; pointer-events: none;
 }
 .video-modal.episodes-active .video-window {
-    flex: 0 0 33vw;
+    flex: 0 0 28vw;
+}
+.video-modal.episodes-active .video-container {
+    width: 100%;
 }
 .video-modal.episodes-active.instagram-active .video-container {
     width: 60%;
 }
 .video-modal.episodes-active .console-stage {
-    width: 90vw;
+    width: 65vw;
 }
 
 .episodes-wrapper {
@@ -419,11 +436,11 @@ body {
     transition: none; position: relative; margin-right: 0; pointer-events: none;
 }
 .video-modal.episodes-active .episodes-wrapper {
-    flex: 0 0 clamp(400px, 55vw, 1200px); width: clamp(400px, 55vw, 1200px); opacity: 1; margin-right: 2vw; white-space: normal; height: 60vh;
+    flex: 0 0 35vw; width: 35vw; opacity: 1; margin-right: 2vw; white-space: normal; height: 60vh;
     pointer-events: auto; padding-left: 50px; border-left: 1px solid rgba(255, 255, 255, 0.1); box-sizing: border-box;
 }
 .ep-inner {
-    width: clamp(400px, 60vw, 1200px);
+    width: 100%;
     transform: translateY(80px);
     opacity: 0;
     transition: none;
