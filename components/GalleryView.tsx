@@ -2,25 +2,64 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const catalog = [
-    { id: "PeQn0uR7eso", title: "Red Bull Track Takeover", yr: "2026", slug: "/red-bull-track-takeover", meta: "4 EPISODES", thumbnail: "https://serkanarslan.me/media/thumbnails/thumb_tracktakeover.webp" },
-    { id: "D6HiDIH9kFM", title: "Red Bull Rap Trivia", yr: "2024", slug: "/red-bull-rap-trivia", episodes: [
-        { id: "WuLPNvPWXF0", title: "Khontkar vs Lil Zey" },
-        { id: "UGhQtMcnjg8", title: "Motive vs Uzi" }
-    ] },
-    { id: "jcx04qqIjQk", title: "Red Bull 64 Bars", yr: "2021", slug: "/red-bull-64-bars", episodes: [
-        { id: "jcx04qqIjQk", title: "Khontkar" },
-        { id: "puulT0hK9Vo", title: "Ceza" },
-        { id: "YNesJIR5WbM", title: "Baneva" },
-        { id: "dRGvfB-g8tU", title: "Motive" },
-        { id: "Sq245blpXDA", title: "Cevik" },
-        { id: "R9slYkKkU3Q", title: "Riot" },
-        { id: "3e3tmSQ9Qog", title: "Uzi" },
-        { id: "BbNIIWRuy2Q", title: "Lil Zey" }
-    ] },
-    { id: "rrn:content:trailer-videos:f7fecf11-3736-4441-958a-e0f61dabb0ec:tr-TR", title: "Red Bull SoundClash 2026", yr: "2026", slug: "/red-bull-soundclash-2026" },
-    { id: "hgd-CuzV24w", title: "Red Bull SoundClash 2024 Live", yr: "2024", slug: "/red-bull-soundclash-2024-live" },
-    { id: "rrn:content:videos:1864170c-99b0-487e-9cb8-4fb460572408:tr-TR", title: "Red Bull SoundClash 2024 Trailer", yr: "2024", slug: "/red-bull-soundclash-2024-trailer" },
-    { id: "DYM96Y0oEGY", title: "Red Bull 60 Seconds", yr: "2026", slug: "/red-bull-60-sec", isInstagram: true }
+  { 
+    id: "PeQn0uR7eso", 
+    title: "Red Bull Track Takeover", 
+    yr: "2024", 
+    slug: "/red-bull-track-takeover", 
+    meta: "2 EPISODES",
+    thumbnail: "https://serkanarslan.me/media/thumbnails/thumb_tracktakeover.webp",
+    episodes: [
+      { id: "PeQn0uR7eso", title: "Hadise & Motive | Küçük Bir Yol" },
+      { id: "2tgvuXuRWz8", title: "Murat Boz & Poizi | Özledim" },
+    ]
+  },
+  { 
+    id: "xUS5SZeCIXM", 
+    title: "Red Bull Rap Trivia", 
+    yr: "2024", 
+    slug: "/red-bull-rap-trivia", 
+    meta: "14 EPISODES",
+    episodes: [
+      { id: "xUS5SZeCIXM", title: "S1E1" },
+      { id: "UGhQtMcnjg8", title: "S1E2" },
+      { id: "sIbtcbG39LQ", title: "S1E3" },
+      { id: "_g4HUl0N2E8", title: "S1E4" },
+      { id: "tn-1tr8cmnM", title: "S1E5" },
+      { id: "i7PGkSQRUSc", title: "S1E6" },
+      { id: "zkGQlHvBf6c", title: "S1 Special 1" },
+      { id: "eKVhNxV1gks", title: "S1 Special 2" },
+      { id: "YbgW53s7JrM", title: "S2E1" },
+      { id: "wJ9n5r-Fc6U", title: "S2E2" },
+      { id: "5P-mopSm_aY", title: "S2E3" },
+      { id: "DRw_zlBTdZM", title: "S2E4" },
+      { id: "WuLPNvPWXF0", title: "S2E5" },
+      { id: "D6HiDIH9kFM", title: "S2 Special 1" },
+    ]
+  },
+  { 
+    id: "BbNIIWRuy2Q", 
+    title: "Red Bull 64 Bars", 
+    yr: "2021", 
+    slug: "/red-bull-64-bars", 
+    meta: "8 EPISODES",
+    episodes: [
+      { id: "BbNIIWRuy2Q", title: "Eko Fresh" },
+      { id: "3e3tmSQ9Qog", title: "Chefket" },
+      { id: "R9slYkKkU3Q", title: "9 Canlı" },
+      { id: "Sq245blpXDA", title: "Erci E" },
+      { id: "dRGvfB-g8tU", title: "Joker" },
+      { id: "jcx04qqIjQk", title: "Uzi" },
+      { id: "puulT0hK9Vo", title: "M Lisa" },
+      { id: "YNesJIR5WbM", title: "Heijan" },
+    ]
+  },
+  { 
+    id: "hgd-CuzV24w", 
+    title: "Red Bull SoundClash 2024 Live", 
+    yr: "2024", 
+    slug: "/red-bull-soundclash-2024-live" 
+  },
 ];
 
 const GalleryView: React.FC = () => {
@@ -570,6 +609,15 @@ const GalleryView: React.FC = () => {
                 </div>
                 <div className="nav-zone prev-zone" onClick={() => navStep(-1)}><div className="nav-arrow">&#10094;</div></div>
                 <div className="nav-zone next-zone" onClick={() => navStep(1)}><div className="nav-arrow">&#10095;</div></div>
+
+                <div id="infoPanel" className="info-panel">
+                    <div id="infoMeta" className="reveal-row" style={{marginBottom: '15px', lineHeight: '1.6'}}>
+                        {/* populated by syncData() */}
+                    </div>
+                    <div id="infoDesc" className="reveal-row">
+                        {/* populated by syncData() */}
+                    </div>
+                </div>
             </div>
         </div>, document.body
       ) : null}

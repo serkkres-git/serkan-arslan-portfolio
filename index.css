@@ -1,55 +1,11 @@
 @import "tailwindcss";
 
-/* Step 1: Define all custom fonts using @font-face */
-
-@font-face {
-    font-family: 'ITC Avant Garde';
-    src: url('https://serkanarslan.me/media/fonts/ITCAvantGardeGothicLTBold.woff2') format('woff2');
-    font-weight: bold;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Basic Commercial';
-    src: url('https://serkanarslan.me/media/fonts/BasicCommercialLT-Roman.woff2') format('woff2');
-    font-weight: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Basic Commercial';
-    src: url('https://serkanarslan.me/media/fonts/BasicCommercialLT-Bold.woff2') format('woff2');
-    font-weight: bold;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Basic Commercial';
-    src: url('https://serkanarslan.me/media/fonts/BasicCommercialLT-Black.woff2') format('woff2');
-    font-weight: 900;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Space Mono';
-    src: url('https://serkanarslan.me/media/fonts/SpaceMono-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Space Mono';
-    src: url('https://serkanarslan.me/media/fonts/SpaceMono-Bold.woff2') format('woff2');
-    font-weight: bold;
-    font-display: swap;
-}
-
-/* Step 2: Register fonts in Tailwind @theme block */
+/* Google Fonts are loaded in index.html */
 
 @theme {
-  --font-heading: "ITC Avant Garde", "Basic Commercial", sans-serif;
-  --font-sans: "Basic Commercial", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Space Mono", ui-monospace, "Courier New", monospace;
+  --font-heading: "Lexend Deca", "Poppins", sans-serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
 }
 
 /* Rest of your existing CSS variables and styles continue below */
