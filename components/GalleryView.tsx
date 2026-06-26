@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useLocation } from 'react-router-dom';
+import VideoPlayer from './VideoPlayer';
 
 const catalog = [
   { 
@@ -8,7 +10,7 @@ const catalog = [
     yr: "2024", 
     slug: "/red-bull-track-takeover", 
     meta: "2 EPISODES",
-    thumbnail: "https://serkanarslan.me/media/thumbnails/thumb_tracktakeover.webp",
+    thumbnail: "https://serkanarslan.me/media/SI202603250147.jpg",
     episodes: [
       { id: "PeQn0uR7eso", title: "Hadise & Motive | Küçük Bir Yol" },
       { id: "2tgvuXuRWz8", title: "Murat Boz & Poizi | Özledim" },
@@ -60,12 +62,50 @@ const catalog = [
     yr: "2024", 
     slug: "/red-bull-soundclash-2024-live" 
   },
+  { 
+    id: "red-bull-dys", 
+    title: "Red Bull DYS", 
+    yr: "2026", 
+    slug: "/red-bull-dys",
+    meta: "FEATURE VIDEO",
+    thumbnail: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=800",
+    isLocalVideo: true,
+    videoUrl: "https://serkanarslan.me/media/videos/zoom_deneme.mp4"
+  },
 ];
 
 const GalleryView: React.FC = () => {
   const currentIdx = useRef(0);
   const isPanelOpen = useRef(false);
   const activeSlot = useRef('slotA');
+  const location = useLocation();
+  const [activeProject, setActiveProject] = useState<any>(null);
+
+  const getThemeColor = () => {
+    if (location.pathname === '/producer') return '#2EBD8E';
+    if (location.pathname === '/motion-designer') return '#E63946';
+    if (location.pathname === '/video-editor') return '#0EA5E9';
+    return '#0EA5E9';
+  };
+
+  const getRoleName = () => {
+    if (location.pathname === '/producer') return 'PRODUCER';
+    if (location.pathname === '/motion-designer') return 'MOTION DESIGNER';
+    if (location.pathname === '/video-editor') return 'VIDEO EDITOR';
+    return 'PRODUCER';
+  };
+
+  const activeColor = getThemeColor();
+  const activeRole = getRoleName();
+
+  const getThemeClasses = () => {
+    if (location.pathname === '/producer') return { border: 'border-[#2EBD8E]', text: 'text-[#2EBD8E]', hover: 'hover:text-[#2EBD8E]' };
+    if (location.pathname === '/motion-designer') return { border: 'border-[#E63946]', text: 'text-[#E63946]', hover: 'hover:text-[#E63946]' };
+    if (location.pathname === '/video-editor') return { border: 'border-[#0EA5E9]', text: 'text-[#0EA5E9]', hover: 'hover:text-[#0EA5E9]' };
+    return { border: 'border-[#0EA5E9]', text: 'text-[#0EA5E9]', hover: 'hover:text-[#0EA5E9]' };
+  };
+
+  const themeClasses = getThemeClasses();
 
   // We use effect to bind everything like vanilla js so it matches perfectly
   useEffect(() => {
@@ -133,6 +173,7 @@ const GalleryView: React.FC = () => {
       currentIdx.current = i;
       updatePreloads(i);
       const p = catalog[currentIdx.current];
+      setActiveProject(p);
       const slot = document.getElementById(activeSlot.current) as HTMLIFrameElement;
       
       const inactiveSlot = activeSlot.current === 'slotA' ? 'slotB' : 'slotA';
@@ -142,21 +183,25 @@ const GalleryView: React.FC = () => {
       if (slot) {
         slot.classList.remove('hidden', 'slide-in-right', 'slide-in-left', 'slide-out-right', 'slide-out-left', 'exit-left', 'exit-right');
         slot.classList.add('active');
-        if ((p as any).isInstagram) {
+        if (p.isLocalVideo) {
+            slot.src = "";
+        } else if ((p as any).isInstagram) {
             slot.src = `https://www.instagram.com/p/${p.id}/embed`;
         } else {
             slot.src = p.id.includes('rrn') ? `https://www.redbull.com/embed/${p.id}?autoplay=true&muted=true` : `https://www.youtube.com/embed/${p.id}?autoplay=1&mute=1&enablejsapi=1`;
         }
-        slot.onload = () => {
-            setTimeout(() => {
-                slot.contentWindow?.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
-                slot.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-            }, 500);
-            setTimeout(() => {
-                slot.contentWindow?.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
-                slot.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-            }, 1000);
-        };
+        if (!p.isLocalVideo) {
+            slot.onload = () => {
+                setTimeout(() => {
+                    slot.contentWindow?.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
+                    slot.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                }, 500);
+                setTimeout(() => {
+                    slot.contentWindow?.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
+                    slot.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                }, 1000);
+            };
+        }
       }
       syncData();
       
@@ -212,17 +257,11 @@ const GalleryView: React.FC = () => {
       mhYrs.forEach(y => y.innerHTML = p.yr || '2026');
 
       const mhRoles = document.querySelectorAll('.mh-role');
-      mhRoles.forEach(r => r.innerHTML = `ROLE <span class="text-[#00e58c]">${(p as any).role || 'PRODUCER'}</span>`);
+      mhRoles.forEach(r => r.innerHTML = `ROLE <span style="color: ${activeColor}">${(p as any).role || activeRole}</span>`);
 
       const mhClients = document.querySelectorAll('.mh-client');
-      mhClients.forEach(c => c.innerHTML = `CLIENT <span class="text-[#00e58c]">${(p as any).client || 'RED BULL'}</span>`);
+      mhClients.forEach(c => c.innerHTML = `CLIENT <span style="color: ${activeColor}">${(p as any).client || 'RED BULL'}</span>`);
 
-      const infoMeta = document.getElementById('infoMeta');
-      const infoDesc = document.getElementById('infoDesc');
-
-      if (infoMeta) infoMeta.innerText = ((p as any).meta ? (p as any).meta + " • " : "") + p.yr + " // Red Bull";
-      if (infoDesc) infoDesc.innerText = "Production analysis and creative direction overview for " + p.title + ".";
-      
       const csTitleEl = document.getElementById('csTitleOuter');
       if (csTitleEl) csTitleEl.style.display = 'none';
       
@@ -241,15 +280,15 @@ const GalleryView: React.FC = () => {
             </div>
         </div>
         <div class="mb-10">
-            <h3 class="text-[#00e58c] text-xs font-sans tracking-widest uppercase mb-4 md:mb-6">THE CHALLENGE</h3>
+            <h3 class="text-xs font-sans tracking-widest uppercase mb-4 md:mb-6" style="color: ${activeColor}">THE CHALLENGE</h3>
             <p class="text-lg lg:text-xl text-gray-300 font-sans leading-relaxed">Translate a global Red Bull format into a local edition that felt premium on broadcast and native on social, on a tight production window.</p>
         </div>
         <div class="mb-10">
-            <h3 class="text-[#00e58c] text-xs font-sans tracking-widest uppercase mb-4 md:mb-6">THE APPROACH</h3>
+            <h3 class="text-xs font-sans tracking-widest uppercase mb-4 md:mb-6" style="color: ${activeColor}">THE APPROACH</h3>
             <p class="text-lg lg:text-xl text-gray-300 font-sans leading-relaxed">Built a repeatable shoot system — modular set, locked camera language and a finishing template — so every episode shared a look while each artist kept their own energy.</p>
         </div>
         <div class="mb-10">
-            <h3 class="text-[#00e58c] text-xs font-sans tracking-widest uppercase mb-4 md:mb-6">RESULT</h3>
+            <h3 class="text-xs font-sans tracking-widest uppercase mb-4 md:mb-6" style="color: ${activeColor}">RESULT</h3>
             <p class="text-lg lg:text-xl text-gray-300 font-sans leading-relaxed">Delivered on schedule with a consistent visual identity across the run, carrying strong reach well past the initial broadcast window.</p>
         </div>
       `;
@@ -341,6 +380,7 @@ const GalleryView: React.FC = () => {
       
       setTimeout(() => {
           currentIdx.current = 0;
+          setActiveProject(catalog[0]);
           syncData();
           
           if (currentSlotEl) {
@@ -378,6 +418,7 @@ const GalleryView: React.FC = () => {
       
       const nextIdx = (currentIdx.current + dir + catalog.length) % catalog.length;
       const pNext = catalog[nextIdx];
+      setActiveProject(pNext);
       const inactiveSlotId = activeSlot.current === 'slotA' ? 'slotB' : 'slotA';
       
       const currentSlotEl = document.getElementById(activeSlot.current) as HTMLIFrameElement;
@@ -385,21 +426,25 @@ const GalleryView: React.FC = () => {
       
       if (inSlotEl) {
         inSlotEl.classList.remove('active', 'slide-in-right', 'slide-in-left', 'slide-out-right', 'slide-out-left', 'exit-left', 'exit-right');
-        if ((pNext as any).isInstagram) {
+        if (pNext.isLocalVideo) {
+            inSlotEl.src = "";
+        } else if ((pNext as any).isInstagram) {
             inSlotEl.src = `https://www.instagram.com/p/${pNext.id}/embed`;
         } else {
             inSlotEl.src = pNext.id.includes('rrn') ? `https://www.redbull.com/embed/${pNext.id}?autoplay=true&muted=true` : `https://www.youtube.com/embed/${pNext.id}?autoplay=1&mute=1&enablejsapi=1`;
         }
-        inSlotEl.onload = () => {
-            setTimeout(() => {
-                inSlotEl.contentWindow?.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
-                inSlotEl.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-            }, 500);
-            setTimeout(() => {
-                inSlotEl.contentWindow?.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
-                inSlotEl.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-            }, 1000);
-        };
+        if (!pNext.isLocalVideo) {
+            inSlotEl.onload = () => {
+                setTimeout(() => {
+                    inSlotEl.contentWindow?.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
+                    inSlotEl.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                }, 500);
+                setTimeout(() => {
+                    inSlotEl.contentWindow?.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
+                    inSlotEl.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+                }, 1000);
+            };
+        }
       }
 
       rows.forEach((r: any) => { r.style.transition = 'opacity 0.2s ease, transform 0.3s ease'; r.classList.add(dir > 0 ? 'text-exit-left' : 'text-exit-right'); });
@@ -453,10 +498,10 @@ const GalleryView: React.FC = () => {
       
       document.querySelectorAll('.video-tab').forEach(el => {
           if (el.getAttribute('data-mode') === tab) {
-              el.classList.add('text-white', 'border-[#00e58c]');
+              el.classList.add('text-white', themeClasses.border);
               el.classList.remove('text-gray-500', 'border-transparent');
           } else {
-              el.classList.remove('text-white', 'border-[#00e58c]');
+              el.classList.remove('text-white', themeClasses.border);
               el.classList.add('text-gray-500', 'border-transparent');
           }
       });
@@ -467,25 +512,22 @@ const GalleryView: React.FC = () => {
 
       if (tab === 'fullscreen') {
           if (isPanelOpen.current) {
-              rows.forEach((r: any) => { r.style.transition = 'opacity 0.2s ease, transform 0.3s ease'; r.classList.add('text-exit-left'); });
-              setTimeout(() => { 
-                if (panel) panel.classList.remove('active'); 
-                setTimeout(() => { rows.forEach((r: any) => { r.style.transition = 'none'; r.classList.remove('text-exit-left'); }); }, 700); 
-              }, 100);
+              rows.forEach((r: any) => { r.style.transition = 'none'; r.classList.add('text-exit-left'); });
+              if (panel) panel.classList.remove('active'); 
               isPanelOpen.current = false;
           }
       } else if (tab === 'details') {
           if (!isPanelOpen.current) {
               rows.forEach((r: any) => { r.style.transition = 'none'; r.classList.add('text-exit-left'); });
               if (panel) panel.classList.add('active');
-              setTimeout(() => { rows.forEach((r: any) => { r.style.transition = 'opacity 0.4s ease, transform 0.6s var(--transition-kinetic)'; r.classList.remove('text-exit-left'); }); }, 50);
+              rows.forEach((r: any) => { r.style.transition = 'none'; r.classList.remove('text-exit-left'); });
               isPanelOpen.current = true;
           }
       } else if (tab === 'casestudy') {
           if (!isPanelOpen.current) {
               rows.forEach((r: any) => { r.style.transition = 'none'; r.classList.add('text-exit-left'); });
               if (panel) panel.classList.add('active');
-              setTimeout(() => { rows.forEach((r: any) => { r.style.transition = 'opacity 0.4s ease, transform 0.6s var(--transition-kinetic)'; r.classList.remove('text-exit-left'); }); }, 50);
+              rows.forEach((r: any) => { r.style.transition = 'none'; r.classList.remove('text-exit-left'); });
               isPanelOpen.current = true;
           }
           if (modal) modal.classList.add('casestudy-active');
@@ -493,7 +535,7 @@ const GalleryView: React.FC = () => {
           if (!isPanelOpen.current) {
               rows.forEach((r: any) => { r.style.transition = 'none'; r.classList.add('text-exit-left'); });
               if (panel) panel.classList.add('active');
-              setTimeout(() => { rows.forEach((r: any) => { r.style.transition = 'opacity 0.4s ease, transform 0.6s var(--transition-kinetic)'; r.classList.remove('text-exit-left'); }); }, 50);
+              rows.forEach((r: any) => { r.style.transition = 'none'; r.classList.remove('text-exit-left'); });
               isPanelOpen.current = true;
           }
           if (modal) modal.classList.add('episodes-active');
@@ -507,6 +549,7 @@ const GalleryView: React.FC = () => {
       const panel = document.getElementById('infoPanel');
       if (panel) panel.classList.remove('active');
       isPanelOpen.current = false;
+      setActiveProject(null);
       setTimeout(() => { 
         if (modal) modal.style.display = 'none'; 
         const a = document.getElementById('slotA') as HTMLIFrameElement;
@@ -518,18 +561,23 @@ const GalleryView: React.FC = () => {
 
   const renderMasterHeader = () => (
     <div className="master-header w-full pointer-events-none">
-        <div className="flex gap-6 md:gap-10 mb-5">
-            <button className="video-tab text-white border-b-[3px] border-[#00e58c] pb-2 font-bold uppercase text-xs tracking-[0.2em] transition-colors hover:text-white pointer-events-auto" data-mode="fullscreen" onClick={() => switchTab('fullscreen')}>Fullscreen</button>
-            <button className="video-tab text-gray-500 border-b-[3px] border-transparent hover:text-white pb-2 font-bold uppercase text-xs tracking-[0.2em] transition-colors pointer-events-auto" data-mode="casestudy" onClick={() => switchTab('casestudy')}>Case Study</button>
-            <button className="video-tab text-gray-500 border-b-[3px] border-transparent hover:text-white pb-2 font-bold uppercase text-xs tracking-[0.2em] transition-colors pointer-events-auto" data-mode="episodes" data-tab-type="episodes" onClick={() => switchTab('episodes')}>Episodes</button>
+        <div className="flex w-full mb-5 items-center justify-between pointer-events-none">
+            <div className="flex gap-6 md:gap-10">
+                <button className={`video-tab text-white border-b-[3px] ${themeClasses.border} pb-2 font-bold uppercase text-xs tracking-[0.2em] transition-colors ${themeClasses.hover} pointer-events-auto cursor-pointer`} data-mode="fullscreen" onClick={() => switchTab('fullscreen')}>Fullscreen</button>
+                <button className={`video-tab text-gray-500 border-b-[3px] border-transparent ${themeClasses.hover} pb-2 font-bold uppercase text-xs tracking-[0.2em] transition-colors pointer-events-auto cursor-pointer`} data-mode="casestudy" onClick={() => switchTab('casestudy')}>Case Study</button>
+                <button className={`video-tab text-gray-500 border-b-[3px] border-transparent ${themeClasses.hover} pb-2 font-bold uppercase text-xs tracking-[0.2em] transition-colors pointer-events-auto cursor-pointer`} data-mode="episodes" data-tab-type="episodes" onClick={() => switchTab('episodes')}>Episodes</button>
+            </div>
+            <button className={`text-white/80 ${themeClasses.hover} hover:bg-black/60 transition-colors p-2 bg-black/20 rounded-full backdrop-blur-md pointer-events-auto cursor-pointer`} onClick={closeConsole}>
+                <svg viewBox="0 0 24 24" width="28" height="28"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth={3} fill="none" strokeLinecap="round"/></svg>
+            </button>
         </div>
         <div className="mh-title text-4xl md:text-[3.5rem] leading-none font-sans font-bold tracking-tight text-white mb-4 whitespace-nowrap" style={{textShadow: '0 4px 20px rgba(0,0,0,0.8)'}}>
             Title
         </div>
         <div className="flex flex-wrap gap-6 text-[10px] md:text-xs text-gray-400 font-sans tracking-widest uppercase font-semibold">
             <span className="mh-yr">2026</span>
-            <span className="mh-client">CLIENT <span className="text-[#00e58c]">RED BULL</span></span>
-            <span className="mh-role">ROLE <span className="text-[#00e58c]">PRODUCER</span></span>
+            <span className="mh-client">CLIENT <span style={{ color: activeColor }}>RED BULL</span></span>
+            <span className="mh-role">ROLE <span style={{ color: activeColor }}>{activeRole}</span></span>
         </div>
     </div>
   );
@@ -557,15 +605,10 @@ const GalleryView: React.FC = () => {
 
       {document.body ? createPortal(
         <div id="videoModal" className="video-modal" onClick={closeConsole}>
-            <div className="absolute top-[88px] right-6 md:right-10 z-[200] pointer-events-auto" onClick={(e) => e.stopPropagation()}>
-                <button className="text-white/80 hover:text-[#00e58c] hover:bg-black/60 transition-colors p-2 bg-black/20 rounded-full backdrop-blur-md" onClick={closeConsole}>
-                    <svg viewBox="0 0 24 24" width="28" height="28"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth={3} fill="none" strokeLinecap="round"/></svg>
-                </button>
-            </div>
 
             <div className="console-stage" id="mainStage" onClick={(e) => e.stopPropagation()}>
+                {renderMasterHeader()}
                 <div className="case-study-wrapper">
-                    {renderMasterHeader()}
                     <div className="cs-inner flex flex-col w-full h-full relative" style={{ display: 'flex' }}>
                         <div id="csTitleOuter" className="cs-title uppercase tracking-tight text-3xl flex items-center gap-2">
                         </div>
@@ -588,12 +631,22 @@ const GalleryView: React.FC = () => {
                     </div>
                 </div>
                 <div className="episodes-wrapper" id="episodesWrapper">
-                    {renderMasterHeader()}
                     <div className="ep-inner flex flex-col w-full h-full relative" style={{ display: 'flex' }}>
                         <div id="epTitleOuter" className="cs-title uppercase tracking-tight text-3xl flex items-center gap-2">
                         </div>
                         <div className="flex w-full h-full relative" style={{ flex: 1, minHeight: 0 }}>
-                            <div className="episodes-panel">
+                            <div className="ep-scroll-indicator">
+                                <div className="ep-scroll-progress" id="epProgress"></div>
+                            </div>
+                            <div className="episodes-panel" onScroll={(e) => {
+                                const target = e.currentTarget;
+                                const scrollProgress = document.getElementById('epProgress');
+                                if (scrollProgress) {
+                                    const maxScroll = target.scrollHeight - target.clientHeight;
+                                    const percentage = maxScroll > 0 ? (target.scrollTop / maxScroll) * 100 : 0;
+                                    scrollProgress.style.height = `${percentage}%`;
+                                }
+                            }}>
                                 <div className="episodes-content grid grid-cols-2 md:grid-cols-4 gap-4" id="episodesGrid">
                                 </div>
                             </div>
@@ -601,23 +654,18 @@ const GalleryView: React.FC = () => {
                     </div>
                 </div>
                 <div className="video-window" id="vWin">
-                    {renderMasterHeader()}
                     <div className="video-container" id="videoTarget">
-                        <iframe id="slotA" className="video-slot active" src={undefined} allow="autoplay; fullscreen"></iframe>
-                        <iframe id="slotB" className="video-slot" src={undefined} allow="autoplay; fullscreen"></iframe>
+                        <iframe id="slotA" className={`video-slot active ${activeProject?.isLocalVideo ? 'opacity-0 pointer-events-none' : ''}`} src={undefined} allow="autoplay; fullscreen"></iframe>
+                        <iframe id="slotB" className={`video-slot ${activeProject?.isLocalVideo ? 'opacity-0 pointer-events-none' : ''}`} src={undefined} allow="autoplay; fullscreen"></iframe>
+                        {activeProject?.isLocalVideo && (
+                          <div className="absolute inset-0 z-50">
+                            <VideoPlayer src={activeProject.videoUrl} poster={activeProject.thumbnail} />
+                          </div>
+                        )}
                     </div>
                 </div>
                 <div className="nav-zone prev-zone" onClick={() => navStep(-1)}><div className="nav-arrow">&#10094;</div></div>
                 <div className="nav-zone next-zone" onClick={() => navStep(1)}><div className="nav-arrow">&#10095;</div></div>
-
-                <div id="infoPanel" className="info-panel">
-                    <div id="infoMeta" className="reveal-row" style={{marginBottom: '15px', lineHeight: '1.6'}}>
-                        {/* populated by syncData() */}
-                    </div>
-                    <div id="infoDesc" className="reveal-row">
-                        {/* populated by syncData() */}
-                    </div>
-                </div>
             </div>
         </div>, document.body
       ) : null}

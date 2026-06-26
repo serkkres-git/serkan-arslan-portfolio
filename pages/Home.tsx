@@ -2,7 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-const CATEGORIES = [
+interface Category {
+  id: string;
+  title: string;
+  subtext: string;
+  image: string;
+  link: string;
+  hoverImage?: string;
+  hoverImages?: string[];
+}
+
+const CATEGORIES: Category[] = [
   {
     id: 'producer',
     title: 'PRODUCER',
@@ -26,7 +36,7 @@ const CATEGORIES = [
   }
 ];
 
-const CategoryColumn = ({ cat }: { cat: typeof CATEGORIES[0] }) => {
+const CategoryColumn: React.FC<{ cat: Category }> = ({ cat }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [stage, setStage] = useState(0);
 
@@ -54,6 +64,11 @@ const CategoryColumn = ({ cat }: { cat: typeof CATEGORIES[0] }) => {
     <Link 
       to={cat.link} 
       className="column-link group"
+      style={{
+        '--theme-glow': cat.id === 'producer' ? 'rgba(46,189,142,0.18)' :
+                        cat.id === 'designer' ? 'rgba(230,57,70,0.18)' :
+                        'rgba(14,165,233,0.18)'
+      } as React.CSSProperties}
       data-hover="true"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -98,7 +113,11 @@ const CategoryColumn = ({ cat }: { cat: typeof CATEGORIES[0] }) => {
         cat.id === 'designer' ? 'items-start' : 
         'items-center'
       }`}>
-        <h1 className={`text-[#8075ff] text-[max(1.2rem,min(3vw,2.5rem))] font-heading font-extrabold tracking-[0.2em] transition-all duration-700 group-hover:text-white group-hover:-translate-y-4 group-hover:scale-105 drop-shadow-[2px_2px_10px_rgba(0,0,0,0.8)] leading-tight px-6 whitespace-nowrap ${
+        <h1 className={`text-[max(1.2rem,min(3vw,2.5rem))] font-heading font-extrabold tracking-[0.2em] transition-all duration-700 group-hover:text-white group-hover:-translate-y-4 group-hover:scale-105 drop-shadow-[2px_2px_10px_rgba(0,0,0,0.8)] leading-tight px-6 whitespace-nowrap ${
+          cat.id === 'producer' ? 'text-[#2EBD8E]' :
+          cat.id === 'designer' ? 'text-[#E63946]' :
+          'text-[#0EA5E9]'
+        } ${
           cat.id === 'producer' ? 'text-right origin-right' : 
           cat.id === 'designer' ? 'text-left origin-left' : 
           'text-center origin-center'

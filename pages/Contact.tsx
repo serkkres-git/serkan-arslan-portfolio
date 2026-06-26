@@ -11,9 +11,9 @@ const Contact: React.FC = () => {
     >
       <div className="max-w-xl text-center">
         <h1 className="text-5xl md:text-7xl font-heading font-bold mb-8">GET IN TOUCH</h1>
-        <p className="text-[#8075ff] font-heading text-xl mb-12 tracking-widest uppercase italic">Available for select projects worldwide.</p>
+        <p className="text-[#0EA5E9] font-heading text-xl mb-12 tracking-widest uppercase italic">Available for select projects worldwide.</p>
         <div className="space-y-4">
-          <p className="text-2xl font-sans hover:text-[#8075ff] transition-colors cursor-pointer">hello@serkanarslan.com</p>
+          <p className="text-2xl font-sans hover:text-[#0EA5E9] transition-colors cursor-pointer">hello@serkanarslan.com</p>
           <div className="flex justify-center gap-8 pt-8">
             <span className="text-gray-500 font-heading text-xs tracking-widest uppercase hover:text-white cursor-pointer transition-colors">Instagram</span>
             <span className="text-gray-500 font-heading text-xs tracking-widest uppercase hover:text-white cursor-pointer transition-colors">LinkedIn</span>

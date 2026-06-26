@@ -11,7 +11,7 @@
 /* Rest of your existing CSS variables and styles continue below */
 
 :root {
-  --purple: #8075ff;
+  --purple: var(--theme-accent, #0EA5E9);
   --bg: #0a0a0a;
   --panel-width: 25vw;
   --transition-kinetic: all 1.2s cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -20,6 +20,11 @@
   --cell-w: 800px;
   --cell-h: 450px;
   --gap-size: 40px; 
+}
+
+::selection {
+  background: var(--theme-accent, #0EA5E9);
+  color: #fff;
 }
 
 html {
@@ -98,7 +103,7 @@ body {
 }
 
 .column-link:hover .column-overlay {
-  background: rgba(128, 117, 255, 0.3);
+  background: var(--theme-glow, rgba(14, 165, 233, 0.18));
 }
 
 /* Neighbor Logic: Specifically blur non-hovered siblings when ONE is hovered */
@@ -124,9 +129,9 @@ body {
 .card-img { position: absolute; inset: 0; background-size: cover; background-position: center; filter: grayscale(100%) brightness(0.3); transition: 0.5s; }
 .project-card:hover .card-img { filter: grayscale(0%) brightness(0.7); transform: scale(1.05); }
 .card-label { position: absolute; bottom: 15px; left: 15px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; z-index: 3; transition: 0.3s; padding: 4px 8px; color: #fff; }
-.project-card:hover .card-label { background: #00e58c; color: #000; text-shadow: none; }
+.project-card:hover .card-label { background: var(--theme-accent, #2EBD8E); color: #000; text-shadow: none; }
 
-.video-modal { position: fixed; inset: 0; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: none; opacity: 0; transition: opacity 0.5s; cursor: pointer; }
+.video-modal { position: fixed; inset: 0; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(10px); z-index: 99999; display: none; opacity: 0; transition: opacity 0.5s; cursor: default; }
 .video-modal.active { opacity: 1; display: block; }
 .console-stage { 
     position: absolute; 
@@ -134,18 +139,13 @@ body {
     left: 50%; 
     transform: translate(-50%, -50%); 
     display: flex; 
-    align-items: center; 
+    align-items: stretch; 
     justify-content: center; 
     width: 65vw; 
-    height: 60vh;
+    max-width: 90vw;
+    height: 36.5625vw;
     cursor: default; 
 }
-
-.info-panel { 
-    flex: 0 0 0%; opacity: 1; padding-top: 10px; padding-bottom: 10px; display: flex; flex-direction: column; justify-content: center;
-    transition: none; width: 0; white-space: nowrap; overflow: hidden;
-}
-.info-panel.active { flex: 0 0 clamp(280px, 25vw, 400px); width: clamp(280px, 25vw, 400px); opacity: 1; margin-right: 3vw; padding-right: 20px; white-space: normal; overflow: visible; }
 .reveal-row { opacity: 1; transform: translateX(0); filter: blur(0); transition: none; width: 100%; }
 
 .text-exit-left { opacity: 0 !important; filter: blur(5px) !important; transform: translateX(-20vw) !important; pointer-events: none; }
@@ -154,57 +154,32 @@ body {
 .loop-in { opacity: 0 !important; transform: translateX(calc(-100vw - var(--gap-size))) !important; }
 
 #movingTitle { font-size: 1.8rem; font-weight: 900; text-transform: uppercase; line-height: 1.1; color: #fff; margin-top: 0; margin-bottom: 10px; width: auto; box-sizing: border-box; text-align: left; }
-.info-panel:not(.active) #movingTitle { white-space: nowrap; }
 
 .master-header {
     position: absolute;
     bottom: calc(100% + 2rem);
     left: 0;
-    width: 600px;
-    max-width: 90vw;
+    width: 100%;
+    max-width: none;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     pointer-events: none;
     z-index: 100;
     transition: none;
+    opacity: 1;
+    transform: translateY(0);
 }
 .master-header button {
     pointer-events: auto;
 }
 
 /* Header visibility controls */
-.video-window .master-header {
-    opacity: 1;
-    transform: translateY(0);
-}
-.video-modal.casestudy-active .video-window .master-header,
-.video-modal.episodes-active .video-window .master-header {
-    opacity: 0;
-    transform: translateY(-20px);
-    pointer-events: none;
-}
-
-.case-study-wrapper .master-header,
-.episodes-wrapper .master-header {
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.video-modal.casestudy-active .case-study-wrapper .master-header {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.video-modal.episodes-active .episodes-wrapper .master-header {
-    opacity: 1;
-    transform: translateY(0);
-}
 
 #infoMeta { color: var(--purple); font-size: 0.65rem; letter-spacing: 2px; margin-bottom: 15px; font-weight: 700; text-transform: uppercase; }
 
-.video-window { flex: 1; position: relative; transition: none; }
-.video-container { position: relative; width: 100%; padding-top: 56.25%; background: transparent; box-shadow: 0 30px 100px rgba(0,0,0,0.8); transition: none; overflow: hidden; }
+.video-window { flex: 0 0 auto; width: 100%; margin-left: auto; position: relative; transition: none; display: flex; flex-direction: column; justify-content: center; }
+.video-container { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; margin: 0 auto; background: transparent; box-shadow: 0 30px 100px rgba(0,0,0,0.8); transition: none; overflow: hidden; }
 
 .video-slot { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; opacity: 0; z-index: 1; pointer-events: none; }
 .video-slot.active { opacity: 1; z-index: 2; transform: translateX(0); pointer-events: auto; }
@@ -256,6 +231,7 @@ body {
 }
 .video-modal.instagram-active .video-container {
     width: 31.640625%;
+    height: auto;
     margin: 0 auto;
     transform: scale(0.85);
 }
@@ -290,7 +266,7 @@ body {
 .video-modal.casestudy-active .prev-zone, .video-modal.episodes-active .prev-zone { left: -100px; }
 .video-modal.casestudy-active .next-zone, .video-modal.episodes-active .next-zone { right: -100px; }
 .nav-arrow { font-size: 2.5rem; color: rgba(255,255,255,0.2); transition: none; }
-.nav-zone:hover .nav-arrow { color: #00e58c; }
+.nav-zone:hover .nav-arrow { color: var(--theme-accent, #2EBD8E); }
 
 .train-overlay { 
     position: fixed; inset: 0; pointer-events: none; z-index: 200000; 
@@ -318,33 +294,16 @@ body {
     0% { transform: translateX(calc(-100% - var(--gap-size))); } 
     100% { transform: translateX(100vw); } 
 }
-
-.video-modal.casestudy-active .info-panel {
-    /* Retain width so we can animate children, overflow visible allows them to slide up out of bounds before disappearing */
-    flex: 0 0 0%; width: 0; opacity: 0; margin-right: 0; padding-right: 0; overflow: visible;
-}
-.info-panel-content {
-    width: clamp(280px, 25vw, 400px);
-    transition: none;
-    transform: translateY(0);
-    opacity: 1;
-}
-.video-modal.casestudy-active .info-panel-content {
-    position: absolute;
-    top: 50%;
-    margin-top: -100px;
-    transform: translateY(-80px);
-    opacity: 0;
-    pointer-events: none;
-}
 .video-modal.casestudy-active .video-window {
     flex: 0 0 28vw;
 }
 .video-modal.casestudy-active .video-container {
     width: 100%;
+    height: auto;
 }
 .video-modal.casestudy-active.instagram-active .video-container {
     width: 60%;
+    height: auto;
 }
 .video-modal.casestudy-active .console-stage {
     width: 65vw;
@@ -355,8 +314,8 @@ body {
     transition: none; position: relative; margin-right: 0; pointer-events: none;
 }
 .video-modal.casestudy-active .case-study-wrapper {
-    flex: 0 0 35vw; width: 35vw; opacity: 1; margin-right: 2vw; white-space: normal; height: 60vh;
-    pointer-events: auto; padding-left: 50px; border-left: 1px solid rgba(255, 255, 255, 0.1); box-sizing: border-box;
+    flex: 0 0 35vw; width: 35vw; opacity: 1; margin-right: 2vw; white-space: normal;
+    pointer-events: auto; padding-left: 0; border-left: none; box-sizing: border-box;
 }
 .cs-inner {
     width: 100%;
@@ -372,9 +331,11 @@ body {
     opacity: 1;
     position: relative;
     bottom: auto; margin-bottom: 0;
+    height: 100%;
+    overflow-y: auto;
 }
 .case-study-panel {
-    flex: 1; padding-right: 40px; overflow-y: auto; overflow-x: hidden; cursor: ns-resize; color: #fff;
+    flex: 1; padding-right: 40px; overflow-y: auto; overflow-x: hidden; cursor: default; color: #fff;
     display: flex; flex-direction: column; justify-content: flex-start;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
@@ -385,21 +346,15 @@ body {
 
 .case-study-panel::-webkit-scrollbar { width: 0px; display: none; }
 
-.cs-scroll-indicator {
+.cs-scroll-indicator, .ep-scroll-indicator {
     position: absolute; right: 0; top: 15px; bottom: 15px; width: 4px;
     background: rgba(255,255,255,0.15); opacity: 0; transition: opacity 0.3s; z-index: 10;
     border-radius: 2px;
 }
 .video-modal.casestudy-active .cs-scroll-indicator { opacity: 1; }
-.cs-scroll-progress {
-    position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: #00e58c; transition: 0.1s; border-radius: 2px;
-}
-.cs-scroll-progress::after {
-    content: '';
-    position: absolute;
-    bottom: -4px; left: -4px; width: 12px; height: 12px;
-    background: #fff; border: 2px solid #00e58c;
-    border-radius: 50%;
+.video-modal.episodes-active .ep-scroll-indicator { opacity: 1; }
+.cs-scroll-progress, .ep-scroll-progress {
+    position: absolute; top: 0; left: 0; width: 100%; height: 0%; background: var(--theme-accent, #2EBD8E); transition: 0.1s; border-radius: 2px;
 }
 .cs-scroll-cap-top, .cs-scroll-cap-bottom {
     display: none;
@@ -412,20 +367,16 @@ body {
     opacity: 1; transform: translateY(0); transition-delay: 0s;
 }
 .cs-title { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; line-height: 1.1; color: #fff; padding: 10px 0; z-index: 10; margin-top: -10px; flex-shrink: 0; }
-.video-modal.episodes-active .info-panel {
-    flex: 0 0 0%; width: 0; opacity: 0; margin-right: 0; padding-right: 0; overflow: visible;
-}
-.video-modal.episodes-active .info-panel-content {
-    position: absolute; top: 50%; margin-top: -100px; transform: translateY(-80px); opacity: 0; pointer-events: none;
-}
 .video-modal.episodes-active .video-window {
     flex: 0 0 28vw;
 }
 .video-modal.episodes-active .video-container {
     width: 100%;
+    height: auto;
 }
 .video-modal.episodes-active.instagram-active .video-container {
     width: 60%;
+    height: auto;
 }
 .video-modal.episodes-active .console-stage {
     width: 65vw;
@@ -436,8 +387,8 @@ body {
     transition: none; position: relative; margin-right: 0; pointer-events: none;
 }
 .video-modal.episodes-active .episodes-wrapper {
-    flex: 0 0 35vw; width: 35vw; opacity: 1; margin-right: 2vw; white-space: normal; height: 60vh;
-    pointer-events: auto; padding-left: 50px; border-left: 1px solid rgba(255, 255, 255, 0.1); box-sizing: border-box;
+    flex: 0 0 35vw; width: 35vw; opacity: 1; margin-right: 2vw; white-space: normal;
+    pointer-events: auto; padding-left: 0; border-left: none; box-sizing: border-box;
 }
 .ep-inner {
     width: 100%;
@@ -453,6 +404,8 @@ body {
     opacity: 1;
     position: relative;
     bottom: auto; margin-bottom: 0;
+    height: 100%;
+    overflow-y: auto;
 }
 .episodes-panel {
     flex: 1; padding-right: 40px; overflow-y: auto; overflow-x: hidden; color: #fff;

@@ -19,7 +19,7 @@ const VideoEditor: React.FC = () => {
           className="flex flex-col gap-16"
         >
           <div className="max-w-3xl">
-            <span className="text-[#8075ff] font-heading text-xs tracking-[0.3em] uppercase block mb-4">Narrative Sculpting</span>
+            <span className="text-[#0EA5E9] font-heading text-xs tracking-[0.3em] uppercase block mb-4">Narrative Sculpting</span>
             <h1 className="text-5xl md:text-8xl font-heading font-bold mb-8 tracking-tighter">VIDEO EDITOR</h1>
             <p className="text-gray-400 text-lg leading-relaxed">
               Cutting to the core of the human experience. I transform raw footage into cohesive, emotionally resonant stories using timing, rhythm, and structural precision.
@@ -33,8 +33,9 @@ const VideoEditor: React.FC = () => {
                 className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40 group-hover:scale-105 transition-transform duration-1000"
                 alt="Editor desk"
               />
+              <div className="absolute inset-0 bg-[#0EA5E9]/0 group-hover:bg-[#0EA5E9]/10 transition-colors duration-1000 pointer-events-none" />
               <div className="absolute inset-0 p-12 flex flex-col justify-between">
-                <Scissors className="text-[#8075ff]" size={32} />
+                <Scissors className="text-[#0EA5E9]" size={32} />
                 <div>
                    <h3 className="font-heading text-2xl mb-2">COMMERCIALS</h3>
                    <p className="text-gray-500 font-sans text-sm">30 seconds to define a world.</p>
@@ -43,7 +44,7 @@ const VideoEditor: React.FC = () => {
             </div>
 
             <div className="grid grid-rows-2 gap-4 h-full">
-               <div className="bg-[#8075ff] p-12 flex flex-col justify-between text-black">
+               <div className="bg-[#0EA5E9] p-12 flex flex-col justify-between text-black shadow-[0_0_30px_rgba(14,165,233,0.18)]">
                   <Film size={32} />
                   <div>
                     <h3 className="font-heading text-2xl mb-2">DOCUMENTARY</h3>
@@ -65,7 +66,7 @@ const VideoEditor: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
              {[...Array(8)].map((_, i) => (
-               <div key={i} className="aspect-[16/9] bg-white/5 border border-white/10 hover:bg-[#8075ff]/10 hover:border-[#8075ff] transition-all flex items-center justify-center text-center p-4 cursor-pointer" data-hover="true">
+               <div key={i} className="aspect-[16/9] bg-white/5 border border-white/10 hover:bg-[#0EA5E9]/10 hover:border-[#0EA5E9] transition-all flex items-center justify-center text-center p-4 cursor-pointer" data-hover="true">
                  <span className="font-heading text-[10px] tracking-widest">REEL ITEM {i + 1}</span>
                </div>
              ))}

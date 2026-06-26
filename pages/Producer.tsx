@@ -54,7 +54,7 @@ const Producer: React.FC = () => {
             <motion.span 
               ref={theRef}
               style={{ opacity: theOpacity, display: 'inline-block' }} 
-              className="absolute right-[100%] pr-[0.3em] font-sans font-light text-[#00e58c] text-3xl md:text-5xl -mt-2"
+              className="absolute right-[100%] pr-[0.3em] font-sans font-light text-[#2EBD8E] text-3xl md:text-5xl -mt-2"
             >
               The
             </motion.span>
@@ -72,7 +72,7 @@ const Producer: React.FC = () => {
         >
           <div>
             <h1 className="text-5xl md:text-7xl font-heading font-black uppercase opacity-0 pointer-events-none m-0 leading-tight" aria-hidden="true" style={{ userSelect: 'none' }}>
-              <span className="absolute right-[100%] pr-[0.3em] font-sans font-light text-[#00e58c] text-3xl md:text-5xl -mt-2">The</span>
+              <span className="absolute right-[100%] pr-[0.3em] font-sans font-light text-[#2EBD8E] text-3xl md:text-5xl -mt-2">The</span>
               PRODUCER
             </h1>
             <p className="text-gray-400 text-lg md:text-xl leading-relaxed mt-6 mb-12 max-w-xl">
@@ -86,14 +86,15 @@ const Producer: React.FC = () => {
               className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
               alt="Producer workflow"
             />
+            <div className="absolute inset-0 bg-[#2EBD8E]/0 group-hover:bg-[#2EBD8E]/10 transition-colors duration-700 pointer-events-none" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <button className="w-20 h-20 bg-[#8075ff] rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform shadow-2xl" data-hover="true">
+              <button className="w-20 h-20 bg-[#2EBD8E] rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform shadow-[0_0_30px_rgba(46,189,142,0.4)]" data-hover="true">
                 <Play fill="white" size={32} className="ml-1" />
               </button>
             </div>
             <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
               <div className="font-heading text-[10px] tracking-widest uppercase opacity-50">Showreel 2025</div>
-              <Layout size={20} className="text-[#8075ff]" />
+              <Layout size={20} className="text-[#2EBD8E]" />
             </div>
           </div>
         </motion.div>
